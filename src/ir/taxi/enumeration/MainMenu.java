@@ -1,0 +1,27 @@
+package ir.taxi.enumeration;
+
+public enum MainMenu {
+    ONE("1. Add a group of drivers"),
+    TWO("2. Add a group of passengers"),
+    THREE("3. Driver signup or login"),
+    FOUR("4. Passenger signup or login"),
+    FIVE("5. Show ongoing travels"),
+    SIX("6. Show a list of drivers"),
+    SEVEN("7. Show a list of passengers");
+
+    private String expression;
+
+    MainMenu(String expression) {
+        this.expression = expression;
+    }
+
+    public String getExpression() {
+        return expression;
+    }
+
+    public static void showMainMenu(){
+        for (MainMenu item:MainMenu.values()) {
+            System.out.println(item.getExpression());
+        }
+    }
+}
