@@ -5,7 +5,10 @@ import ir.taxi.dataAccess.DriverDataAccess;
 import ir.taxi.dataAccess.PassengerDataAccess;
 import ir.taxi.dataAccess.TripDataAccess;
 import ir.taxi.enumeration.*;
-import ir.taxi.model.*;
+import ir.taxi.model.Car;
+import ir.taxi.model.Driver;
+import ir.taxi.model.Passenger;
+import ir.taxi.model.Trip;
 
 import java.sql.Date;
 import java.sql.SQLException;
@@ -54,7 +57,7 @@ public class Main {
         }
     }
 
-    private static void showOngoingTravels()  {
+    private static void showOngoingTravels() {
         TripDataAccess tripDao = new TripDataAccess();
         PassengerDataAccess passengerDao = new PassengerDataAccess();
         DriverDataAccess driverDao = new DriverDataAccess();
@@ -76,7 +79,7 @@ public class Main {
         }
     }
 
-    private static void showListOfPassengers()  {
+    private static void showListOfPassengers() {
         PassengerDataAccess passengerDao = new PassengerDataAccess();
         List<Passenger> passengers = passengerDao.getListOfPassengers();
         for (Passenger item : passengers) {

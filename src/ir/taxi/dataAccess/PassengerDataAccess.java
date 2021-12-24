@@ -31,7 +31,7 @@ public class PassengerDataAccess extends DataBaseAccess {
 
     public String findPassengerByUsername(String username) {
         String result = "";
-        session =builderSession().openSession();
+        session = builderSession().openSession();
         transaction = session.beginTransaction();
         Query query = session.createQuery("Select name from Passenger where name=:n");
         query.setParameter("n", username);
@@ -66,7 +66,7 @@ public class PassengerDataAccess extends DataBaseAccess {
 
     public void decreaseBalance(String username, int price) {
         int decreasedBalance = findBalanceByUserName(username) - price;
-        session =builderSession().openSession();
+        session = builderSession().openSession();
         transaction = session.beginTransaction();
         Query query = session.createQuery("update Passenger set balance=:b where name=:n");
         query.setParameter("b", decreasedBalance);
@@ -106,7 +106,7 @@ public class PassengerDataAccess extends DataBaseAccess {
 
     public int findPassengerIdByUsername(String username) {
         int id = 0;
-        session =builderSession().openSession();
+        session = builderSession().openSession();
         transaction = session.beginTransaction();
         Query query = session.createQuery("Select id from Passenger where name=:n");
         query.setParameter("n", username);

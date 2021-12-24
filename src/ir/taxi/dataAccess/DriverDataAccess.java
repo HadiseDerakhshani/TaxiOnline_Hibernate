@@ -132,7 +132,7 @@ public class DriverDataAccess extends DataBaseAccess {
     }
 
     public void updateDriverStatusToONGOINGByUsername(String username) {
-        session =builderSession().openSession();
+        session = builderSession().openSession();
         transaction = session.beginTransaction();
         Query query = session.createQuery("update Driver set status=:s where name=:n");
         query.setParameter("s", TripStatus.ONGOING);
@@ -145,7 +145,7 @@ public class DriverDataAccess extends DataBaseAccess {
 
     public List<Driver> findDriverByWaitStatus() {
         List<Driver> drivers = new ArrayList<>();
-        session =builderSession().openSession();
+        session = builderSession().openSession();
         transaction = session.beginTransaction();
         Query query = session.createQuery("Select id,name,family,plaque,currentLocationLat,currentLocationLong from Driver where status=:s");
         query.setParameter("s", "WAIT");
@@ -171,7 +171,7 @@ public class DriverDataAccess extends DataBaseAccess {
 
     public Driver getDriverInformationByUsername(String username) {
         Driver driver = new Driver();
-        session =builderSession().openSession();
+        session = builderSession().openSession();
         transaction = session.beginTransaction();
         Query query = session.createQuery(" from Driver where name=:n");
         query.setParameter("n", username);
@@ -183,7 +183,7 @@ public class DriverDataAccess extends DataBaseAccess {
     }
 
     public void updateDriverLocation(List<Double> destinationCoordinate, String username) {
-        session =builderSession().openSession();
+        session = builderSession().openSession();
         transaction = session.beginTransaction();
         Query query = session.createQuery("update Driver set currentLocationLat=:late, currentLocationLong=:long where name=:n");
         query.setParameter("late", destinationCoordinate.get(0));

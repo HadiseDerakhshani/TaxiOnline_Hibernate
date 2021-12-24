@@ -6,14 +6,14 @@ import org.hibernate.cfg.Configuration;
 
 @Data
 public class DataBaseAccess {
-    private  static  SessionFactory sessionFactory;
+    private static SessionFactory sessionFactory;
 
 
-        public static SessionFactory builderSession() {
-            if (sessionFactory == null) {
-                sessionFactory = new Configuration().configure().buildSessionFactory();
-            }
-            return sessionFactory;
+    public static SessionFactory builderSession() {
+        if (sessionFactory == null) {
+            sessionFactory = new Configuration().configure("ir/taxi/config/hibernate.cfg.xml").buildSessionFactory();
         }
+        return sessionFactory;
+    }
 
 }

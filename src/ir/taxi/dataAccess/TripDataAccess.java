@@ -83,7 +83,7 @@ public class TripDataAccess extends DataBaseAccess {
 
     public List<Trip> getOngoingTravels() {
         List<Trip> ongoingTrips = new ArrayList<>();
-        session =builderSession().openSession();
+        session = builderSession().openSession();
         transaction = session.beginTransaction();
         Query query = session.createQuery("Select passengerId,driverId,originLat,originLong,destinationLat,destinationLong," +
                 "price,tripDate from Trip where payStatus=:s or payStatus=:s1");
