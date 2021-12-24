@@ -6,6 +6,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.Objects;
+
 @Data
 @Entity
 @MappedSuperclass
@@ -18,13 +19,13 @@ public class Person {
     private String family;
     private String username;
 
-    @Column(name="phone_number")
+    @Column(name = "phone_number")
     private String phoneNumber;
 
-    @Column(name="national_code")
+    @Column(name = "national_code")
     private long nationalCode;
 
-    @Column(name="birth_date")
+    @Column(name = "birth_date")
     private Date birthDate;
 
     private TripStatus status;
@@ -112,13 +113,13 @@ public class Person {
     public String toString() {
         return
                 "id=" + id +
-                ", name='" + name + '\'' +
-                ", family='" + family + '\'' +
-                ", username='" + username + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", nationalCode=" + nationalCode +
-                ", birthDate=" + birthDate +
-                ", status='" + status + '\'';
+                        ", name='" + name + '\'' +
+                        ", family='" + family + '\'' +
+                        ", username='" + username + '\'' +
+                        ", phoneNumber='" + phoneNumber + '\'' +
+                        ", nationalCode=" + nationalCode +
+                        ", birthDate=" + birthDate +
+                        ", status='" + status + '\'';
     }
 
     @Override

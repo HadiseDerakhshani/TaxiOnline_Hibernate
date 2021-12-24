@@ -1,27 +1,26 @@
 package ir.taxi.dataAccess;
 
-import ir.taxi.enumeration.PayStatus;
 import ir.taxi.enumeration.TripStatus;
-import ir.taxi.model.Driver;
 import ir.taxi.model.Passenger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
-import java.sql.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PassengerDataAccess extends DataBaseAccess {
-    private Session session ;
-    private   Transaction transaction;
+    private Session session;
+    private Transaction transaction;
 
     public PassengerDataAccess() {
         super();
     }
+
     public void saveGroupOfPassengers(List<Passenger> passengers) {
-        session=getSessionFactory().openSession();
-        transaction=session.beginTransaction();
+        session = builderSession().openSession();
+        transaction = session.beginTransaction();
         for (Passenger item : passengers) {
             session.save(item);
         }
@@ -31,45 +30,47 @@ public class PassengerDataAccess extends DataBaseAccess {
     }
 
     public String findPassengerByUsername(String username) {
-        String result="";
-        session=getSessionFactory().openSession();
-        transaction=session.beginTransaction();
+        String result = "";
+        session =builderSession().openSession();
+        transaction = session.beginTransaction();
         Query query = session.createQuery("Select name from Passenger where name=:n");
-        query.setParameter("n",username);
+        query.setParameter("n", username);
         List list = query.list();
-        result= (String) list.get(0);
+        result = (String) list.get(0);
         transaction.commit();
         session.close();
         return result;
     }
-    public void saveNewPassenger(Passenger passenger)  {
-        session=getSessionFactory().openSession();
-        transaction=session.beginTransaction();
+
+    public void saveNewPassenger(Passenger passenger) {
+        session = builderSession().openSession();
+        transaction = session.beginTransaction();
         session.save(passenger);
         transaction.commit();
         session.close();
 
     }
 
-    public void increaseBalance(String username, int amount)  {
+    public void increaseBalance(String username, int amount) {
         int increasedBalance = findBalanceByUserName(username) + amount;
-        session=getSessionFactory().openSession();
-        transaction=session.beginTransaction();
-        Query query=session.createQuery("update Passenger set balance=:b where name=:n");
-        query.setParameter("b",increasedBalance);
-        query.setParameter("n",username);
+        session = builderSession().openSession();
+        transaction = session.beginTransaction();
+        Query query = session.createQuery("update Passenger set balance=:b where name=:n");
+        query.setParameter("b", increasedBalance);
+        query.setParameter("n", username);
         query.executeUpdate();
         transaction.commit();
         session.close();
 
     }
-    public void decreaseBalance(String username, int price){
+
+    public void decreaseBalance(String username, int price) {
         int decreasedBalance = findBalanceByUserName(username) - price;
-        session=getSessionFactory().openSession();
-        transaction=session.beginTransaction();
-        Query query=session.createQuery("update Passenger set balance=:b where name=:n");
-        query.setParameter("b",decreasedBalance);
-        query.setParameter("n",username);
+        session =builderSession().openSession();
+        transaction = session.beginTransaction();
+        Query query = session.createQuery("update Passenger set balance=:b where name=:n");
+        query.setParameter("b", decreasedBalance);
+        query.setParameter("n", username);
         query.executeUpdate();
         transaction.commit();
         session.close();
@@ -77,39 +78,40 @@ public class PassengerDataAccess extends DataBaseAccess {
     }
 
     public int findBalanceByUserName(String username) {
-       int findBalance=0;
-        session=getSessionFactory().openSession();
-        transaction=session.beginTransaction();
+        int findBalance = 0;
+        session = builderSession().openSession();
+        transaction = session.beginTransaction();
         Query query = session.createQuery("Select balance from Passenger where name=:n");
-        query.setParameter("n",username);
+        query.setParameter("n", username);
         List list = query.list();
-      findBalance= (int) list.get(0);
+        findBalance = (int) list.get(0);
         transaction.commit();
         session.close();
         return findBalance;
     }
+
     public Passenger getPassengerInformationByUsername(String username) throws SQLException {
 
-            Passenger passenger =new Passenger();
-        session=getSessionFactory().openSession();
-        transaction=session.beginTransaction();
+        Passenger passenger = new Passenger();
+        session = builderSession().openSession();
+        transaction = session.beginTransaction();
         Query query = session.createQuery(" from Passenger where name=:n");
-        query.setParameter("n",username);
-       passenger = (Passenger) query.list();
+        query.setParameter("n", username);
+        passenger = (Passenger) query.list();
         transaction.commit();
         session.close();
-            return passenger;
+        return passenger;
 
     }
 
     public int findPassengerIdByUsername(String username) {
         int id = 0;
-        session=getSessionFactory().openSession();
-        transaction=session.beginTransaction();
+        session =builderSession().openSession();
+        transaction = session.beginTransaction();
         Query query = session.createQuery("Select id from Passenger where name=:n");
-        query.setParameter("n",username);
+        query.setParameter("n", username);
         List list = query.list();
-       id=(int)list.get(0);
+        id = (int) list.get(0);
         transaction.commit();
         session.close();
         return id;
@@ -117,10 +119,10 @@ public class PassengerDataAccess extends DataBaseAccess {
 
     public List<Passenger> findPassengerById(int id) {
         List<Passenger> passengerInfo = new ArrayList<>();
-        session=getSessionFactory().openSession();
-        transaction=session.beginTransaction();
+        session = builderSession().openSession();
+        transaction = session.beginTransaction();
         Query query = session.createQuery("Select name,family,phoneNumber,balance,status from Passenger where id=:i");
-        query.setParameter("i",id);
+        query.setParameter("i", id);
         List<Passenger> list = query.list();
         for (Passenger item : list) {
             passengerInfo.add(item);
@@ -131,47 +133,50 @@ public class PassengerDataAccess extends DataBaseAccess {
 
     }
 
-    public TripStatus findStatusByUsername(String username){
-        TripStatus status=TripStatus.STOP  ;
-        session=getSessionFactory().openSession();
-        transaction=session.beginTransaction();
+    public TripStatus findStatusByUsername(String username) {
+        TripStatus status = TripStatus.STOP;
+        session = builderSession().openSession();
+        transaction = session.beginTransaction();
         Query query = session.createQuery("Select status from Passenger where name=:n");
-        query.setParameter("n",username);
+        query.setParameter("n", username);
         List list = query.list();
-        status= (TripStatus) list.get(0);
+        status = (TripStatus) list.get(0);
         transaction.commit();
         session.close();
         return status;
 
 
     }
+
     public void updateStatusToONGOINGByUsername(String username) {
-        session=getSessionFactory().openSession();
-        transaction=session.beginTransaction();
-        Query query=session.createQuery("update Passenger set status=:s where name=:n");
-        query.setParameter("s",TripStatus.ONGOING);
-        query.setParameter("n",username);
+        session = builderSession().openSession();
+        transaction = session.beginTransaction();
+        Query query = session.createQuery("update Passenger set status=:s where name=:n");
+        query.setParameter("s", TripStatus.ONGOING);
+        query.setParameter("n", username);
         query.executeUpdate();
         transaction.commit();
         session.close();
 
     }
+
     public void updateStatusToSTOPByUsername(String username) throws SQLException {
-        session=getSessionFactory().openSession();
-        transaction=session.beginTransaction();
-        Query query=session.createQuery("update Passenger set status=:s where name=:n");
-        query.setParameter("s",TripStatus.STOP);
-        query.setParameter("n",username);
+        session = builderSession().openSession();
+        transaction = session.beginTransaction();
+        Query query = session.createQuery("update Passenger set status=:s where name=:n");
+        query.setParameter("s", TripStatus.STOP);
+        query.setParameter("n", username);
         query.executeUpdate();
         transaction.commit();
         session.close();
     }
+
     public void updateStatusToSTOPById(int id) throws SQLException {
-        session=getSessionFactory().openSession();
-        transaction=session.beginTransaction();
-        Query query=session.createQuery("update Passenger set status=:s where id=:i");
-        query.setParameter("s",TripStatus.STOP);
-        query.setParameter("i",id);
+        session = builderSession().openSession();
+        transaction = session.beginTransaction();
+        Query query = session.createQuery("update Passenger set status=:s where id=:i");
+        query.setParameter("s", TripStatus.STOP);
+        query.setParameter("i", id);
         query.executeUpdate();
         transaction.commit();
         session.close();
@@ -179,17 +184,17 @@ public class PassengerDataAccess extends DataBaseAccess {
 
     public List<Passenger> getListOfPassengers() {
         List<Passenger> passengers = new ArrayList<>();
-        session=getSessionFactory().openSession();
-        transaction=session.beginTransaction();
+        session = builderSession().openSession();
+        transaction = session.beginTransaction();
         Query query = session.createQuery("from Passenger ");
         List<Passenger> list = query.list();
         for (Passenger item : list) {
-           passengers.add(item);
+            passengers.add(item);
         }
         transaction.commit();
         session.close();
 
-            return passengers;
+        return passengers;
 
 
     }

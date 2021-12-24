@@ -1,7 +1,5 @@
 package ir.taxi;
 
-import java.util.function.IntUnaryOperator;
-
 public class ValidationUtil {
 
     public static boolean isValidPhoneNumber(String phoneNumber) {
@@ -16,8 +14,8 @@ public class ValidationUtil {
         return input.matches("[0-9]+");
     }
 
-    public static boolean isDouble(String input){
-        return input.matches("-?\\d+(.\\d+)?"); //-?\\d+(.\\d+)?
+    public static boolean isDouble(String input) {
+        return input.matches("-?\\d+(.\\d+)?");
     }
 
     public static boolean isAlphabetic(String input) {
@@ -39,7 +37,7 @@ public class ValidationUtil {
             if (sum % 11 == 0) {
                 return true;
             }
-        }else if(input.length() == 9){
+        } else if (input.length() == 9) {
             int sum = 0;
             int value = 9;
             for (int i = 0; i < 9; i++) {
@@ -49,7 +47,7 @@ public class ValidationUtil {
             if (sum % 11 == 0) {
                 return true;
             }
-        }else if(input.length() == 9){
+        } else if (input.length() == 9) {
             int sum = 0;
             int value = 8;
             for (int i = 0; i < 8; i++) {

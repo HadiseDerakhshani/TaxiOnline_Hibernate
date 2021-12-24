@@ -12,13 +12,13 @@ public enum Vehicle {
         this.expression = expression;
     }
 
-    public String getExpression() {
-        return expression;
-    }
-
-    public static void showVehicleMenu(){
-        for (Vehicle item:Vehicle.values()) {
+    public static void showVehicleMenu() {
+        for (Vehicle item : Vehicle.values()) {
             System.out.println(item.getExpression());
         }
+    }
+
+    public String getExpression() {
+        return expression;
     }
 }

@@ -11,12 +11,13 @@ public enum DriverLoginMenu {
         this.expression = expression;
     }
 
-    public String getExpression() {
-        return expression;
-    }
-    public static void showDriverLoginMenu(){
-        for (DriverLoginMenu item:DriverLoginMenu.values()) {
+    public static void showDriverLoginMenu() {
+        for (DriverLoginMenu item : DriverLoginMenu.values()) {
             System.out.println(item.getExpression());
         }
+    }
+
+    public String getExpression() {
+        return expression;
     }
 }

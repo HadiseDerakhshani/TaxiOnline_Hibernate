@@ -4,12 +4,15 @@ import ir.taxi.enumeration.TripStatus;
 import lombok.Data;
 import lombok.ToString;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import java.sql.Date;
+
 @ToString(callSuper = true)
 @Data
 @Entity
-public class Driver extends Person{
+public class Driver extends Person {
     private String plaque;
     @JoinColumn(name = "car_fk")
     private int carId;
@@ -28,9 +31,6 @@ public class Driver extends Person{
         this.plaque = plaque;
         this.carId = carId;
     }
-
-
-
 
 
 }

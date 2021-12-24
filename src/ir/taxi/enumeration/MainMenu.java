@@ -15,13 +15,13 @@ public enum MainMenu {
         this.expression = expression;
     }
 
-    public String getExpression() {
-        return expression;
-    }
-
-    public static void showMainMenu(){
-        for (MainMenu item:MainMenu.values()) {
+    public static void showMainMenu() {
+        for (MainMenu item : MainMenu.values()) {
             System.out.println(item.getExpression());
         }
+    }
+
+    public String getExpression() {
+        return expression;
     }
 }

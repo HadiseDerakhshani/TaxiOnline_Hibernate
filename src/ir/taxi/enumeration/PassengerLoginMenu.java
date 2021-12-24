@@ -1,4 +1,5 @@
 package ir.taxi.enumeration;
+
 public enum PassengerLoginMenu {
     TRAVEL1("1. Travel request (pay by cash)"),
     TRAVEL2("2. Travel request (pay by account balance)"),
@@ -11,13 +12,13 @@ public enum PassengerLoginMenu {
         this.expression = expression;
     }
 
-    public String getExpression() {
-        return expression;
-    }
-
-    public static void showPassengerLoginMenu(){
-        for (PassengerLoginMenu item:PassengerLoginMenu.values()) {
+    public static void showPassengerLoginMenu() {
+        for (PassengerLoginMenu item : PassengerLoginMenu.values()) {
             System.out.println(item.getExpression());
         }
+    }
+
+    public String getExpression() {
+        return expression;
     }
 }

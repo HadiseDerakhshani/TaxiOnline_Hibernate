@@ -6,6 +6,7 @@ import lombok.ToString;
 
 import javax.persistence.Entity;
 import java.sql.Date;
+
 @ToString(callSuper = true)
 @Data
 @Entity

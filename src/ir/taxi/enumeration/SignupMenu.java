@@ -11,13 +11,13 @@ public enum SignupMenu {
         this.expression = expression;
     }
 
-    public String getExpression() {
-        return expression;
-    }
-
-    public static void showSignupMenu(){
-        for (SignupMenu item:SignupMenu.values()) {
+    public static void showSignupMenu() {
+        for (SignupMenu item : SignupMenu.values()) {
             System.out.println(item.getExpression());
         }
+    }
+
+    public String getExpression() {
+        return expression;
     }
 }

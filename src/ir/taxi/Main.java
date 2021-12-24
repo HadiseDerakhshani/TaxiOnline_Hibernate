@@ -7,13 +7,16 @@ import ir.taxi.dataAccess.TripDataAccess;
 import ir.taxi.enumeration.*;
 import ir.taxi.model.*;
 
-import java.sql.SQLException;
-import java.util.*;
 import java.sql.Date;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Scanner;
 
 public class Main {
     private static final Scanner scanner = new Scanner(System.in);
-    private static final Taxi taxi = new Taxi();
+
 
     public static void main(String[] args) throws Exception {
         while (true) {
@@ -51,12 +54,12 @@ public class Main {
         }
     }
 
-    private static void showOngoingTravels() throws SQLException, ClassNotFoundException {
+    private static void showOngoingTravels()  {
         TripDataAccess tripDao = new TripDataAccess();
         PassengerDataAccess passengerDao = new PassengerDataAccess();
         DriverDataAccess driverDao = new DriverDataAccess();
-        List<Trip> ongoingTrips =  tripDao.getOngoingTravels();
-        for (Trip item:ongoingTrips) {
+        List<Trip> ongoingTrips = tripDao.getOngoingTravels();
+        for (Trip item : ongoingTrips) {
             System.out.println(item.toString());
             List<Passenger> passengerCustomizedInfo = passengerDao.findPassengerById(item.getPassengerId());
             System.out.println(passengerCustomizedInfo);
@@ -65,7 +68,7 @@ public class Main {
         }
     }
 
-    private static void showListOfDrivers() throws SQLException, ClassNotFoundException {
+    private static void showListOfDrivers() {
         DriverDataAccess driverDao = new DriverDataAccess();
         List<Driver> drivers = driverDao.getListOfDrivers();
         for (Driver item : drivers) {
@@ -73,7 +76,7 @@ public class Main {
         }
     }
 
-    private static void showListOfPassengers() throws SQLException, ClassNotFoundException {
+    private static void showListOfPassengers()  {
         PassengerDataAccess passengerDao = new PassengerDataAccess();
         List<Passenger> passengers = passengerDao.getListOfPassengers();
         for (Passenger item : passengers) {
@@ -81,7 +84,7 @@ public class Main {
         }
     }
 
-    private static void addGroupOfDriversByAdmin() throws SQLException, ClassNotFoundException{
+    private static void addGroupOfDriversByAdmin() throws SQLException, ClassNotFoundException {
         String numberOfDrivers;
         do {
             System.out.println("Enter number of drivers");
@@ -159,26 +162,26 @@ public class Main {
         DriverDataAccess driverDao = new DriverDataAccess();
         if (driverDao.findDriverByUsername(username) != null) {
             try {
-                if(driverDao.findStatusByUsername(username) == TripStatus.WAIT){
-                    if(driverDao.findDriverLocationByUsername(username) == true){ //true = null
+                if (driverDao.findStatusByUsername(username) == TripStatus.WAIT) {
+                    if (driverDao.findDriverLocationByUsername(username) == true) { //true = null
                         Double[] point = getDriverLocation();
                         driverDao.UpdateDriverLocationByUsername(username, point);
                     }
                     int choiceNumber;
-                    do{
+                    do {
                         System.out.println("You are waiting for a trip request.");
                         System.out.println("1. Exit");
                         String choice = getChoiceNumber();
                         choiceNumber = Integer.parseInt(choice);
-                    }while (choiceNumber != 1);
-                }else if(driverDao.findStatusByUsername(username) == TripStatus.ONGOING){
+                    } while (choiceNumber != 1);
+                } else if (driverDao.findStatusByUsername(username) == TripStatus.ONGOING) {
                     System.out.println(driverDao.getDriverInformationByUsername(username));
                     int choiceNumber;
-                    do{
+                    do {
                         DriverLoginMenu.showDriverLoginMenu();
                         String choice = getChoiceNumber();
                         choiceNumber = Integer.parseInt(choice);
-                        switch (choiceNumber){
+                        switch (choiceNumber) {
                             case 1:
                                 confirmCashReceiptByDriver(username);
                                 break;
@@ -190,7 +193,7 @@ public class Main {
                             default:
                                 System.out.println("Invalid number!");
                         }
-                    }while (choiceNumber != 3);
+                    } while (choiceNumber != 3);
                 }
             } catch (Exception e) {
                 System.out.println(e.getMessage());
@@ -223,7 +226,7 @@ public class Main {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
-        if(tripDao.findPayStatusByDriverId(driverId) == PayStatus.CASH){
+        if (tripDao.findPayStatusByDriverId(driverId) == PayStatus.CASH) {
             tripDao.updatePayStatusAfterPaying(driverId);
             System.out.println("Confirmed");
         }
@@ -233,8 +236,8 @@ public class Main {
         DriverDataAccess driverDao = new DriverDataAccess();
         int driverId = driverDao.findDriverIdByUsername(username);
         TripDataAccess tripDao = new TripDataAccess();
-        if(tripDao.findPayStatusByDriverId(driverId) == PayStatus.PAYED){
-            List<Double>destinationCoordinate = tripDao.findDestinationCoordinationById(driverId);
+        if (tripDao.findPayStatusByDriverId(driverId) == PayStatus.PAYED) {
+            List<Double> destinationCoordinate = tripDao.findDestinationCoordinationById(driverId);
             driverDao.updateDriverLocation(destinationCoordinate, username);
             driverDao.updateDriverStatusToWaitByUsername(username);
             PassengerDataAccess passengerDao = new PassengerDataAccess();
@@ -304,7 +307,7 @@ public class Main {
                 choiceNumber = Integer.parseInt(choice);
                 switch (choiceNumber) {
                     case 1:
-                        if(passengerDao.findStatusByUsername(username) == TripStatus.STOP){
+                        if (passengerDao.findStatusByUsername(username) == TripStatus.STOP) {
                             Double[] point = getOriginDestination();
                             double originLat = point[0];
                             double originLong = point[1];
@@ -315,22 +318,22 @@ public class Main {
                         }
                         break;
                     case 2:
-                        if(passengerDao.findStatusByUsername(username) == TripStatus.STOP){
+                        if (passengerDao.findStatusByUsername(username) == TripStatus.STOP) {
                             Double[] point = getOriginDestination();
                             double originLat = point[0];
                             double originLong = point[1];
                             double destinationLat = point[2];
                             double destinationLong = point[3];
                             int tripPrice = calculateTripPrice(originLat, originLong, destinationLat, destinationLong);
-                            if(passengerDao.findBalanceByUserName(username) < tripPrice){
+                            if (passengerDao.findBalanceByUserName(username) < tripPrice) {
                                 System.out.println("Your balance is not enough!");
-                                do{
+                                do {
                                     System.out.println("1. Increase account balance");
                                     System.out.println("2. Exit");
                                     choice = getChoiceNumber();
                                     choiceNumber = Integer.parseInt(choice);
-                                }while (choiceNumber == 2);
-                                switch (choiceNumber){
+                                } while (choiceNumber == 2);
+                                switch (choiceNumber) {
                                     case 1:
                                         increasePassengerBalance(username, passengerDao);
                                         break;
@@ -339,7 +342,7 @@ public class Main {
                                     default:
                                         System.out.println("Invalid value");
                                 }
-                            }else{
+                            } else {
                                 findAvailableDriver(username, originLat, originLong, destinationLat, destinationLong, PayStatus.ACCOUNT, tripPrice);
                             }
                         }
@@ -373,24 +376,24 @@ public class Main {
         }
     }
 
-    private static int calculateTripPrice(double origLat, double origLong, double destLat, double destLong){
+    private static int calculateTripPrice(double origLat, double origLong, double destLat, double destLong) {
         double distance = Math.sqrt((Math.exp(origLat - destLat)) + (Math.exp(origLong - destLong)));
         return (int) (1000 * distance);
     }
 
-    private static Double[] getDriverLocation(){
+    private static Double[] getDriverLocation() {
         Double[] point = new Double[2];
         String latitude;
-        do{
+        do {
             System.out.println("Enter your location latitude:");
             latitude = scanner.next();
-        }while (!ValidationUtil.isDouble(latitude));
+        } while (!ValidationUtil.isDouble(latitude));
         point[0] = Double.parseDouble(latitude);
         String longitude;
-        do{
+        do {
             System.out.println("Enter your location longitude:");
             longitude = scanner.next();
-        }while (!ValidationUtil.isDouble(longitude));
+        } while (!ValidationUtil.isDouble(longitude));
         point[1] = Double.parseDouble(longitude);
         return point;
     }
@@ -399,36 +402,37 @@ public class Main {
         System.out.println("Enter the origin and destination of your travel:");
         Double[] point = new Double[4];
         String originLat;
-        do{
+        do {
             System.out.println("Origin latitude:");
             originLat = scanner.next();
-        }while (!ValidationUtil.isDouble(originLat));
+        } while (!ValidationUtil.isDouble(originLat));
         point[0] = Double.parseDouble(originLat);
         String originLong;
-        do{
+        do {
             System.out.println("Origin longitude:");
             originLong = scanner.next();
-        }while (!ValidationUtil.isDouble(originLong));
+        } while (!ValidationUtil.isDouble(originLong));
         point[1] = Double.parseDouble(originLong);
         String destinationLat;
-        do{
+        do {
             System.out.println("Destination latitude:");
             destinationLat = scanner.next();
-        }while (!ValidationUtil.isDouble(destinationLat));
+        } while (!ValidationUtil.isDouble(destinationLat));
         point[2] = Double.parseDouble(destinationLat);
         String destinationLong;
-        do{
+        do {
             System.out.println("Destination longitude:");
             destinationLong = scanner.next();
-        }while (!ValidationUtil.isDouble(destinationLong));
+        } while (!ValidationUtil.isDouble(destinationLong));
         point[3] = Double.parseDouble(destinationLong);
         return point;
     }
+
     private static void findAvailableDriver(String username, double originLat, double originLong, double destinationLat, double destinationLong, PayStatus payStatus, int tripPrice) throws Exception {
         DriverDataAccess driverDao = new DriverDataAccess();
-        List<Driver>foundDrivers = driverDao.findDriverByWaitStatus();
-        List<Double>distances = new ArrayList<>();
-        for (Driver item:foundDrivers) {
+        List<Driver> foundDrivers = driverDao.findDriverByWaitStatus();
+        List<Double> distances = new ArrayList<>();
+        for (Driver item : foundDrivers) {
             double locLat = item.getCurrentLocationLat();
             double locLong = item.getCurrentLocationLong();
             double distance = Math.sqrt((Math.exp(locLat) - Math.exp(originLat)) + ((Math.exp(locLong)) - Math.exp(originLong)));
@@ -445,9 +449,9 @@ public class Main {
         tripDao.saveTrip(trip);
         passengerDao.updateStatusToONGOINGByUsername(username);
         driverDao.updateDriverStatusToONGOINGByUsername(foundDrivers.get(index).getUsername());
-        System.out.println("Your request accepted by " + foundDrivers.get(index).getName() + ", "+
+        System.out.println("Your request accepted by " + foundDrivers.get(index).getName() + ", " +
                 foundDrivers.get(index).getFamily() + ", plaque number: " + foundDrivers.get(index).getPlaque());
-        if(tripDao.findPayStatusByDriverId(availableDriverId) == PayStatus.ACCOUNT){
+        if (tripDao.findPayStatusByDriverId(availableDriverId) == PayStatus.ACCOUNT) {
             decreasePassengerBalance(username, passengerDao, tripPrice);
             tripDao.updatePayStatusAfterPaying(availableDriverId);
         }
@@ -463,12 +467,13 @@ public class Main {
         passengerDao.increaseBalance(username, amountNumber);
         System.out.println("Your balance increased.");
     }
+
     private static void decreasePassengerBalance(String username, PassengerDataAccess passengerDao, int tripPrice) throws Exception {
         passengerDao.decreaseBalance(username, tripPrice);
         System.out.println("Your balance decreased.");
     }
 
-    private static void passengerRegister(PassengerDataAccess passengerDao) throws SQLException{
+    private static void passengerRegister(PassengerDataAccess passengerDao) throws SQLException {
         String name = getNameFromInput();
         String family = getFamilyFromInput();
         String username;
@@ -500,7 +505,7 @@ public class Main {
         return plaque;
     }
 
-    private static Date getBirthDateFromInput(){
+    private static Date getBirthDateFromInput() {
         String date;
         do {
             System.out.println("Enter birth date like 1370-02-12:");
@@ -509,7 +514,8 @@ public class Main {
         Date birthDate = java.sql.Date.valueOf(date);//converting string into sql date
         return birthDate;
     }
-    private static Date getTripDateFromInput(){
+
+    private static Date getTripDateFromInput() {
         String date;
         do {
             System.out.println("Enter trip date like 1400-07-01:");
@@ -564,11 +570,11 @@ public class Main {
         return name;
     }
 
-    private static void chooseVehicleByPassenger(){
+    private static void chooseVehicleByPassenger() {
         Vehicle.showVehicleMenu();
         String choice = getChoiceNumber();
         int choiceNumber = Integer.parseInt(choice);
-        switch (choiceNumber){
+        switch (choiceNumber) {
             case 1:
                 System.out.println("Car");
                 //TODO
